@@ -13,7 +13,7 @@ public class BackgroundTile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       int kaktak = 3;
     }
 
     void Initialize()
