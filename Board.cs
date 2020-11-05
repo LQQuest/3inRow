@@ -65,11 +65,11 @@ public class Board : MonoBehaviour
     {
         if (column > 1 && row > 1)
         {
-            if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag)
+            if (allDots[column - 1, row].CompareTag(piece.tag) && allDots[column - 2, row].CompareTag(piece.tag))
             {
                 return true;
             }
-            if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag)
+            if (allDots[column, row - 1].CompareTag(piece.tag) && allDots[column, row - 2].CompareTag(piece.tag))
             {
                 return true;
             }
@@ -77,14 +77,14 @@ public class Board : MonoBehaviour
         {
             if (row > 1)
             {
-                if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag)
+                if (allDots[column, row - 1].CompareTag(piece.tag) && allDots[column, row - 2].CompareTag(piece.tag))
                 {
                     return true;
                 }
             }
             if (column > 1)
             {
-                if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag)
+                if (allDots[column - 1, row].CompareTag(piece.tag) && allDots[column - 2, row].CompareTag(piece.tag))
                 {
                     return true;
                 }
@@ -93,16 +93,111 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    private bool ColumnOrRow()
+    {
+        int numberHorizontal = 0;
+        int numberVertical = 0;
+        Dot firstPiece = findMatches.currentMatches[0].GetComponent<Dot>();
+        if (firstPiece != null)
+        {
+            foreach (GameObject currentPiece in findMatches.currentMatches)
+            {
+                Dot dot = currentPiece.GetComponent<Dot>();
+                if (dot.row == firstPiece.row)
+                {
+                    numberHorizontal++;
+                }
+
+                if (dot.column == firstPiece.column)
+                {
+                    numberVertical++;
+                }
+            }
+        }
+
+        return (numberHorizontal == 5 || numberVertical == 5);
+    }
+
+    private void CheckToMakeBomb()
+    {
+        if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+        {
+            findMatches.CheckBombs();
+        }
+        if (findMatches.currentMatches.Count == 5 || findMatches.currentMatches.Count == 8)
+        {
+            if (ColumnOrRow())
+            {
+                if (currentDot != null)
+                {
+                    if (currentDot.isMatched)
+                    {
+                        if (!currentDot.isColorBomb)
+                        {
+                            currentDot.isMatched = false;
+                            currentDot.MakeColorBomb();
+                        }
+                    }
+                    else
+                    {
+                        if (currentDot.otherDot != null)
+                        {
+                            Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
+                            if (otherDot.isMatched)
+                            {
+                                if (!otherDot.isColorBomb)
+                                {
+                                    otherDot.isMatched = false;
+                                    otherDot.MakeColorBomb();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (currentDot != null)
+                {
+                    if (currentDot.isMatched)
+                    {
+                        if (!currentDot.isAdjacentBomb)
+                        {
+                            currentDot.isMatched = false;
+                            currentDot.MakeAdjecantBomb();
+                        }
+                    }
+                    else
+                    {
+                        if (currentDot.otherDot != null)
+                        {
+                            Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
+                            if (otherDot.isMatched)
+                            {
+                                if (!otherDot.isAdjacentBomb)
+                                {
+                                    otherDot.isMatched = false;
+                                    otherDot.MakeAdjecantBomb();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     private void DestroyMatchesAt(int column, int row)
     {
         if (allDots[column,row].GetComponent<Dot>().isMatched)
         {
-            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+            if (findMatches.currentMatches.Count == 4)
             {
-                findMatches.CheckBombs();
+                CheckToMakeBomb();
             }
             
-            GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
+            GameObject particle = Instantiate(destroyEffect, 
+                                              allDots[column, row].transform.position, 
+                                              Quaternion.identity);
             Destroy(particle, .5f);
             Destroy(allDots[column,row]);
             allDots[column, row] = null;
