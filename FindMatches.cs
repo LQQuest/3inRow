@@ -229,19 +229,6 @@ public class FindMatches : MonoBehaviour
                 //Make it unmatched?
                 board.currentDot.isMatched = false;
                 //Decide what kind of bomb to make
-                /*
-                int typeOfBomb = Random.Range(0, 100);
-                if (typeOfBomb < 50)
-                {
-                    //make a row bomb
-                    board.currentDot.MakeRowBomb();
-                }
-                else
-                {
-                    // make a column bomb
-                    board.currentDot.MakeColumnBomb();
-                }
-                */
                 if ((board.currentDot.swipeAngle > -45 && board.currentDot.swipeAngle <= 45) 
                     || (board.currentDot.swipeAngle < -135 || board.currentDot.swipeAngle >= 135))
                 {
@@ -258,19 +245,6 @@ public class FindMatches : MonoBehaviour
                 if (otherDot.isMatched)
                 {
                     otherDot.isMatched = false;
-                    /*
-                    int typeOfBomb = Random.Range(0, 100);
-                    if (typeOfBomb < 50)
-                    {
-                        //make a row bomb
-                        otherDot.MakeRowBomb();
-                    }
-                    else
-                    {
-                        // make a column bomb
-                        otherDot.MakeColumnBomb();
-                    }  
-                    */
                     if ((board.currentDot.swipeAngle > -45 && board.currentDot.swipeAngle <= 45) 
                         || (board.currentDot.swipeAngle < -135 || board.currentDot.swipeAngle >= 135))
                     {

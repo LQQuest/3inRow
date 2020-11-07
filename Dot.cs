@@ -208,53 +208,21 @@ public class Dot : MonoBehaviour
         if (swipeAngle > -45 && swipeAngle <= 45 && column < board.wight - 1)
         {
             //Right Swipe
-            /*
-            otherDot = board.allDots[column + 1, row];
-            previousColumn = column;
-            previousRow = row;
-            otherDot.GetComponent<Dot>().column -= 1;
-            column += 1;
-            StartCoroutine(CheckMoveCo());
-            */
-            MovePiecesActual(Vector2.right);
+           MovePiecesActual(Vector2.right);
         }
         else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height - 1)
         {
             //Up Swipe
-            /*
-            otherDot = board.allDots[column, row + 1];;
-            previousColumn = column;
-            previousRow = row;
-            otherDot.GetComponent<Dot>().row -= 1;
-            row += 1;
-            StartCoroutine(CheckMoveCo());
-            */
             MovePiecesActual(Vector2.up);
         }
         else if (swipeAngle > 135 || swipeAngle <= -135 && column > 0)
         {
             //Left Swipe
-            /*
-            otherDot = board.allDots[column - 1, row];;
-            previousColumn = column;
-            previousRow = row;
-            otherDot.GetComponent<Dot>().column += 1;
-            column -= 1;
-            StartCoroutine(CheckMoveCo());
-            */
             MovePiecesActual(Vector2.left);
         }
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             //Down Swipe
-            /*
-            otherDot = board.allDots[column, row - 1];;
-            previousColumn = column;
-            previousRow = row;
-            otherDot.GetComponent<Dot>().row += 1;
-            row -= 1;
-            StartCoroutine(CheckMoveCo());
-            */
             MovePiecesActual(Vector2.down);
         }
 
@@ -262,41 +230,6 @@ public class Dot : MonoBehaviour
 
 
     }
-
-    void FindMatches()
-    {
-        if (column > 0 && column < board.wight -1)
-        {
-            var leftDot1 = board.allDots[column - 1, row];
-            var rightDot1 = board.allDots[column + 1, row];
-            if (leftDot1 != null && rightDot1 != null)
-            {
-                if (leftDot1.CompareTag(this.gameObject.tag) && rightDot1.CompareTag(this.gameObject.tag))
-                {
-                    leftDot1.GetComponent<Dot>().isMatched = true;
-                    rightDot1.GetComponent<Dot>().isMatched = true;
-                    isMatched = true;
-                }
-            }
-            
-        }
-        if (row > 0 && row < board.height -1)
-        {
-            GameObject upDot1 = board.allDots[column, row + 1];
-            GameObject downDot1 = board.allDots[column, row - 1];
-            if (upDot1 != null && downDot1 != null)
-            {
-               if (upDot1.CompareTag(this.gameObject.tag) && downDot1.CompareTag(this.gameObject.tag))
-               {
-                   upDot1.GetComponent<Dot>().isMatched = true;
-                   downDot1.GetComponent<Dot>().isMatched = true;
-                   isMatched = true;
-               } 
-            }
-            
-        }
-    }
-
     public void MakeColumnBomb()
     {
         isColumnBomb = true;
