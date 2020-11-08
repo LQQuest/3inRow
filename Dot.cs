@@ -46,12 +46,6 @@ public class Dot : MonoBehaviour
          
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
-        //tardetX = (int)transform.position.x;
-        //tardetY = (int)transform.position.y;
-        //row = tardetY;
-        //column = tardetX;
-        //previousColumn = column;
-        //previousRow = row;
     }
 
     //Test and Debug only
@@ -66,14 +60,7 @@ public class Dot : MonoBehaviour
     }
 
     void Update()
-    {
-
-        /*if (isMatched)
-        {
-            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
-            mySprite.color = new Color(1f,1f,1f,.2f);
-        }
-        */
+    { 
         targetX = column;
         targetY = row;
         if (Mathf.Abs(targetX - transform.position.x) > .1)
@@ -143,10 +130,7 @@ public class Dot : MonoBehaviour
             else
             {
                 board.DestroyMatches();
-                
             }
-
-            //otherDot = null;
         }
         
         
@@ -197,11 +181,19 @@ public class Dot : MonoBehaviour
         otherDot = board.allDots[column + (int)direction.x, row + (int)direction.y];
         previousColumn = column;
         previousRow = row;
-        otherDot.GetComponent<Dot>().column -= 1 * (int)direction.x;
-        otherDot.GetComponent<Dot>().row -= 1 * (int)direction.y;
-        column += (int)direction.x;
-        row += (int)direction.y;
-        StartCoroutine(CheckMoveCo());
+        if (otherDot != null)
+        {
+            otherDot.GetComponent<Dot>().column -= 1 * (int) direction.x;
+            otherDot.GetComponent<Dot>().row -= 1 * (int) direction.y;
+            column += (int) direction.x;
+            row += (int) direction.y;
+            StartCoroutine(CheckMoveCo()); 
+        }
+        else
+        {
+            board.currentState = GameState.move;
+        }
+        
     }
     void MovePieces()
     {
